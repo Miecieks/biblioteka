@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  golang:
+    build: /golang
+    depends_on:
+      - baza
+  baza:
+    image: postgres:17.5
+    build: 
+      context: ./baza
+      dockerfile: dockerfile
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: ZAQ!2wsx
+      POSTGRES_USER: miecieks
+      POSTGRES_DB: biblioteka
+    volumes:
+      - ./baza_dane:/var/lib/postgresql/data
+  pg4:
+    image: dpage/pgadmin4:9.4
+    ports: 
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: miecieks@mail.pl
+      PGADMIN_DEFAULT_PASSWORD: ZAQ!2wsx
+    
