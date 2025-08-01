@@ -6,25 +6,39 @@ async function getDataJson(url) {
     }
 
     const json = await response.json();
-    console.log(json);
-    console.log(JSON.stringify(json))
-    localStorage.setItem("username", url);
+    let x = json
+    return x
   } catch (error) {
     console.error("BŁĄD: " + error.message);
   }
 }
 
-function GetUser() {
+async function GetUser(id) {
     
-    let user = document.getElementById("login").value
-    let pass = document.getElementById("pass").value
-    let url = "http://localhost:8080/api/user/"+user+"/get";
-    let x = JSON.stringify(getDataJson(url))
-    console.log(x)
-    
+    let url = "http://localhost:8080/api/user/"+id+"/get";
+    let x = await getDataJson(url)
+    return x
     
 }
 
+
+function further(){
+  if(document.getElementById("sub")){
+    document.getElementById("first").style.display = "none"
+    document.getElementById("second").style.display = "block"
+  }
+}
+
+function further2(){
+  if(document.getElementById("sub2")){
+    document.getElementById("second").style.display = "none"
+    document.getElementById("third").style.display = "block"
+  }
+}
+
+function register(){
+  console.log("rejestracja WIP")
+}
 
 function validate(){
   let user = document.getElementById("login").value
@@ -46,9 +60,13 @@ function validate(){
         if (data.success) {
       console.log("Zalogowano pomyślnie!");
       let info = document.getElementById("info")
-      info.innerHTML = "Zalogowano pomyślnie!"
+      info.innerHTML = "Zalogowano pomyślnie! "
+      sessionStorage.setItem("logged", true);
+      sessionStorage.setItem("id", data.id);
     } else {
       console.log("Błąd logowania:", data.message);
+      let info = document.getElementById("info")
+      info.innerHTML = "Błąd logowania"
     }
   })
     .catch(err => console.error("Błąd połączenia:", err));

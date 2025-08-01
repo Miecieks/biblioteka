@@ -10,3 +10,7 @@
 .opa{
     opacity: 1;
 }
+
+#second, #third{
+  display: none;
+}
