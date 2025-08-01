@@ -114,7 +114,7 @@ func main() {
 				query := "SELECT * FROM users WHERE user_name = '" + r.Login + "' AND password = '" + r.Pass + "'"
 				qqq, err := initialize(query)
 				if err != nil {
-					log.Printf("Błąd podczas wykonywania zapytania: %v", err)
+					log.Printf("Błąd podczas wykonywania zapytania SQL: %v", err)
 				}
 				c.JSON(200, gin.H{"success": true, "message": "Zalogowano!", "id": qqq[0]})
 
