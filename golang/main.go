@@ -1,50 +1,21 @@
 package main
 
 import (
-	passes "biblioteka-backend/packages"
-	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	db "biblioteka-backend/db"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v5"
 )
 
 func getAlbums(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, "qqqq")
 }
 
-func initialize(query string) ([]interface{}, error) {
-	ctx := context.Background()
-	conn, err := pgx.Connect(ctx, passes.Certs("nazwa"))
-	if err != nil {
-		return nil, fmt.Errorf("błąd połączenia z bazą: %v", err)
-	}
-	defer conn.Close(ctx)
-
-	rows, err := conn.Query(ctx, query)
-	if err != nil {
-		return nil, fmt.Errorf("błąd zapytania: %v", err)
-	}
-	defer rows.Close()
-
-	var results []interface{}
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			return nil, fmt.Errorf("błąd pobierania wartości: %v", err)
-		}
-		results = append(results, values...)
-	}
-	if rows.Err() != nil {
-		return nil, fmt.Errorf("błąd podczas iteracji po wierszach: %v", rows.Err())
-	}
-
-	return results, nil
-}
 func main() {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
@@ -57,7 +28,7 @@ func main() {
 	}))
 
 	router.GET("/ping", func(c *gin.Context) {
-		ping_test, err := initialize("SELECT user_name FROM users")
+		ping_test, err := db.Initialize("SELECT user_name FROM users")
 		if err != nil {
 			log.Printf("Błąd podczas wykonywania zapytania: %v", err)
 		}
@@ -77,7 +48,7 @@ func main() {
 			switch action {
 			case "get":
 				query := "SELECT * FROM users WHERE id = '" + name + "'"
-				qqq, err := initialize(query)
+				qqq, err := db.Initialize(query)
 				if err != nil {
 					log.Printf("Błąd podczas wykonywania zapytania: %v", err)
 				}
@@ -116,7 +87,7 @@ func main() {
 					return
 				}
 				query := "SELECT * FROM users WHERE user_name = '" + r.Login + "' AND password = '" + r.Pass + "'"
-				qqq, err := initialize(query)
+				qqq, err := db.Initialize(query)
 				if err != nil {
 					log.Printf("Błąd podczas wykonywania zapytania SQL: %v", err)
 					c.JSON(401, gin.H{"failed": true, "res": "Błąd logowania"})

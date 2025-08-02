@@ -18,6 +18,7 @@ func Register() gin.HandlerFunc {
 			fmt.Errorf("błąd połączenia z bazą: %v", err)
 		}
 		defer conn.Close(ctx)
+
 		c.JSON(http.StatusOK, gin.H{"succeded": true, "message": "zarejestrowano"})
 	}
 }
