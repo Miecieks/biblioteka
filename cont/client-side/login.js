@@ -22,10 +22,21 @@ async function GetUser(id) {
 }
 
 
+
+FirstName = ""
+LastName = ""
+
+Email = ""
+
+Login2 = ""
+Pass2 = ""
+
 function further(){
   if(document.getElementById("sub")){
     document.getElementById("first").style.display = "none"
     document.getElementById("second").style.display = "block"
+    FirstName = document.getElementById("name").value
+    LastName = document.getElementById("lastname").value
   }
 }
 
@@ -33,11 +44,38 @@ function further2(){
   if(document.getElementById("sub2")){
     document.getElementById("second").style.display = "none"
     document.getElementById("third").style.display = "block"
+    Email = document.getElementById("email").value
   }
 }
 
 function register(){
   console.log("rejestracja WIP")
+  Login2 = document.getElementById("login").value
+  Pass2 = document.getElementById("pass").value
+
+  const RegisterStruct = {
+    Login: Login2,
+    Pass: Pass2,
+    email: Email,
+    first_name: FirstName,
+    last_name: LastName,
+  };
+
+  console.log(RegisterStruct)
+
+  fetch("http://localhost:8080/api/user/add", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify(RegisterStruct)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      console.log("Zarejestrowano pomyślnie!");
+    }
+  })
 }
 
 function validate(){
@@ -58,11 +96,11 @@ function validate(){
   .then(res => res.json())
   .then(data => {
         if (data.success) {
-      console.log("Zalogowano pomyślnie!");
+      console.log(data);
       let info = document.getElementById("info")
       info.innerHTML = "Zalogowano pomyślnie! "
       sessionStorage.setItem("logged", true);
-      sessionStorage.setItem("id", data.id);
+      sessionStorage.setItem("id", data.res.ID);
     } else {
       console.log("Błąd logowania:", data.message);
       let info = document.getElementById("info")

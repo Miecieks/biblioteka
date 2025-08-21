@@ -1,20 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"net/http"
+	"strconv"
 	"time"
 
-	db "biblioteka-backend/db"
+	db "biblioteka-backend/database"
+	"biblioteka-backend/handlers"
+	"biblioteka-backend/models"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
-
-func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, "qqqq")
-}
 
 func main() {
 	router := gin.Default()
@@ -27,8 +24,9 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	db.ConnectDatabase()
 	router.GET("/ping", func(c *gin.Context) {
-		ping_test, err := db.Initialize("SELECT user_name FROM users")
+		ping_test, err := handlers.GetUserByID(1)
 		if err != nil {
 			log.Printf("Błąd podczas wykonywania zapytania: %v", err)
 		}
@@ -47,32 +45,32 @@ func main() {
 		} else {
 			switch action {
 			case "get":
-				query := "SELECT * FROM users WHERE id = '" + name + "'"
-				qqq, err := db.Initialize(query)
+				id, err := strconv.Atoi(name)
 				if err != nil {
-					log.Printf("Błąd podczas wykonywania zapytania: %v", err)
+					c.JSON(400, gin.H{"error": "Niepoprawne ID"})
+					return
 				}
-				c.JSON(200, gin.H{
-					"veryf":     "true",
-					"FirstName": qqq[1],
-					"LastName":  qqq[2],
-					"username":  qqq[3],
-					"email":     qqq[5],
-					"admin":     qqq[6],
-					"UID":       qqq[7],
-					"pfp":       qqq[8],
-				})
+				user, err := handlers.GetUserByID(id)
+				if err != nil {
+					c.JSON(404, gin.H{"error": "Użytkownik nie znaleziony"})
+				} else {
+					c.JSON(200, gin.H{
+						"id":            user.Id,
+						"first_name":    user.First_name,
+						"last_name":     user.Last_name,
+						"user_name":     user.User_name,
+						"email":         user.Email,
+						"admin":         user.Admin,
+						"user_inner_id": user.User_inner_id,
+						"pfp":           user.Pfp,
+					})
+				}
 			}
 		}
 	})
 
-	type LoginStruct struct {
-		Login string `json:"login"`
-		Pass  string `json:"pass"`
-	}
-
 	router.POST("api/user/:action", func(c *gin.Context) {
-		var r LoginStruct
+
 		action := c.Param("action")
 		if action == "" {
 			c.JSON(400, gin.H{
@@ -82,27 +80,27 @@ func main() {
 
 			switch action {
 			case "verify":
+				var r models.LoginStruct
 				if err := c.BindJSON(&r); err != nil {
 					c.JSON(400, gin.H{"success": false, "res": "Niepoprawny JSON"})
 					return
 				}
-				query := "SELECT * FROM users WHERE user_name = '" + r.Login + "' AND password = '" + r.Pass + "'"
-				qqq, err := db.Initialize(query)
+				user, err := handlers.Verify(r.Login, r.Pass)
 				if err != nil {
-					log.Printf("Błąd podczas wykonywania zapytania SQL: %v", err)
-					c.JSON(401, gin.H{"failed": true, "res": "Błąd logowania"})
-				} else if qqq != nil {
-					tP := fmt.Sprintf("%d", qqq[0])
-					log.Printf("Jest gicior majonez dla:"+tP, err)
-					c.JSON(200, gin.H{"success": true, "message": "Zalogowano!", "id": qqq[0]})
+					c.JSON(404, gin.H{"success": false, "res": "Błąd podczas weryfikacji"})
 				} else {
-					log.Printf("nie jest gicior", err)
-					c.JSON(200, gin.H{"success": false, "message": "nie zalogowano"})
+					c.JSON(200, gin.H{
+						"success": true,
+						"res":     user,
+					})
 				}
+
 			}
 
 		}
 	})
+
+	router.POST("api/user/add", handlers.Register())
 
 	router.Run()
 }
