@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-biblioteka</title>
+    <link rel="icon" type="image/x-icon" href="/images/ikona.ico">
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+<link href="screener.css" rel="stylesheet">
+<body>
+<a class="nav-link" href="../index.html">Powrót</a>
+<div id="everything" class="container-fluid">
+    <div id="profil">
+        <img id="avatar" src="../images/profiles/default.png" class="img-thumbnail rounded-circle" alt="oopsie!">
+        <div id="name"></div>
+        <div>
+            <button id="logout" class="btn btn-danger">Wyloguj się</button>
+            <button id="changePass" class="btn btn-secondary">Zmień hasło</button>
+        </div>
+        <label for="FN">Imię</label>
+        <input name="FN" id="FN" disabled="true">
+        <br>
+        <label for="LN">Nazwisko</label>
+        <input name="LN" id="LN" disabled="true">
+        <br>
+        <label for="EM">Email</label>
+        <input name="EM" id="EM" disabled="true">
+        <br>
+        <label for="UID">Personalne ID</label>
+        <input name="UID" id="UIDprof" disabled="true">
+        
+    </div>
+        <div id="screenOfChange">
+            <button id="closer">X</button>
+            <span>
+                <label for="newPass">Podaj nowe hasło</label>
+                <input name="newPass" id="newPass">
+                <button id="sub">Zmień hasło</button>
+            </span>
+        </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+<script src="login.js"></script>
+<script type="module" src="prof.js"></script>
+</body>
+</html>

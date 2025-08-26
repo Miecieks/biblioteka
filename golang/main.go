@@ -59,6 +59,7 @@ func main() {
 						"first_name":    user.First_name,
 						"last_name":     user.Last_name,
 						"user_name":     user.User_name,
+						"password":      user.Password,
 						"email":         user.Email,
 						"admin":         user.Admin,
 						"user_inner_id": user.User_inner_id,
@@ -101,6 +102,7 @@ func main() {
 	})
 
 	router.POST("api/user/add", handlers.Register())
+	router.POST("api/user/passChange", handlers.ChangePasses())
 
 	router.Run()
 }

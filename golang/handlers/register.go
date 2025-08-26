@@ -16,7 +16,7 @@ func Register() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var data models.RegisterStruct
 		if err := c.ShouldBindJSON(&data); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
 		idik := 0

@@ -74,6 +74,7 @@ function register(){
   .then(data => {
     if (data.success) {
       console.log("Zarejestrowano pomyślnie!");
+      window.location.replace("login.html")
     }
   })
 }
@@ -101,6 +102,8 @@ function validate(){
       info.innerHTML = "Zalogowano pomyślnie! "
       sessionStorage.setItem("logged", true);
       sessionStorage.setItem("id", data.res.ID);
+      sessionStorage.setItem("adm", data.res.Admin);
+      window.location.replace("../index.html")
     } else {
       console.log("Błąd logowania:", data.message);
       let info = document.getElementById("info")

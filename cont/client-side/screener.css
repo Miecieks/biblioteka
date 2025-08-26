@@ -1,0 +1,8 @@
+#screenOfChange{
+    width:300px;
+    height: 150px;
+    background-color: whitesmoke;
+    position: absolute;
+    left: 40%;
+    bottom: 49%;
+}

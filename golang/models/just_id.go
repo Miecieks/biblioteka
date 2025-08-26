@@ -1,5 +1,6 @@
 package models
 
 type ResForVerify struct {
-	ID int
+	ID    int
+	Admin bool
 }
