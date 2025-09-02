@@ -7,24 +7,40 @@
     <link rel="icon" type="image/x-icon" href="/images/ikona.ico">
 </head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-<link href="screener.css" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 <body>
-<div class="container-fluid">
+<div id="main" class="container-fluid">
     <a class="nav-link" href="../index.html">Powrót</a>
    Tutaj będzie zarządzanie księgarnią
     <div id="adder">
         <label for="book_name">Podaj Nazwę książki:</label>
-        <input name="book_name" id="book_name">
+        <input name="book_name" id="book_name" required>
         <br>
         <label for="author">Autor kiążki</label>
-        <input name="author" id="author">
+        <input name="author" id="author" required>
         <br>
         <label for="price">Podaj cene</label>
-        <input name="price" id="price">
+        <input name="price" id="price" type="number" required>
+        <label for="price">Zł</label>
+        
         <br>
         <label for="genre">Podaj gatunek</label>
-        <input name="genre" id="genre">
+        <input name="genre" id="genre" required>
         <br>
+        <label for="Libraries">Wybierz biblioteke</label>
+        <select name="Libraries" id="Libraries" required>
+        </select>
+        <br>
+        <label for="acess">Czy książka jest dostępna?</label>
+        <select name="acess" id="acess" required>
+            <option value="true">Tak</option>
+            <option value="false">Nie</option>
+        </select>
+        <br>
+        <label for="myfile">Select a file:</label>
+        <input type="file" accept=".png" id="myfile" name="myfile">
+        <br>
+        <input type="submit" value="Dodaj" id="submit">
         
     </div>
 </div>

@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS Books (
   genre VARCHAR(15),
   library_id INT NOT NULL,
   is_avaible BOOLEAN,
+  cover TEXT,
   CONSTRAINT fk_books FOREIGN KEY (library_id)
   REFERENCES Libraries(id)
 );

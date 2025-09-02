@@ -61,7 +61,6 @@ function register(){
     last_name: LastName,
   };
 
-  console.log(RegisterStruct)
 
   fetch("http://localhost:8080/api/user/add", {
     method: "POST",

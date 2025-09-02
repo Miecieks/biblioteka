@@ -103,6 +103,82 @@ func main() {
 
 	router.POST("api/user/add", handlers.Register())
 	router.POST("api/user/passChange", handlers.ChangePasses())
+	router.POST("api/stuff/libraries/book/add", handlers.Insert())
+	router.POST("api/stuff/libraries/book/delete", handlers.Delete_book())
+
+	router.GET("api/stuff/libraries/get/all", func(c *gin.Context) {
+		libr := handlers.GetAllLibraries()
+		c.JSON(200, gin.H{
+			"success": true,
+			"res":     libr,
+		})
+
+	})
+	router.GET("api/stuff/libraries/book/get", func(c *gin.Context) {
+		res := handlers.GetAllBooks()
+		c.JSON(200, gin.H{
+			"success": true,
+			"res":     res,
+		})
+
+	})
+
+	router.GET("api/stuff/libraries/book/get/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		if id == "" {
+			c.JSON(400, gin.H{
+				"message": "Brak parametru",
+				"success": false,
+			})
+		} else {
+			id_int, err := strconv.Atoi(id)
+			if err != nil {
+				c.JSON(500, gin.H{
+					"message": "błąd w konwersji",
+					"success": false,
+				})
+			}
+			res, err := handlers.GetBookById(id_int)
+			if err != nil {
+				c.JSON(500, gin.H{
+					"message": "błąd w konwersji",
+					"success": false,
+				})
+			}
+			c.JSON(200, gin.H{
+				"success": true,
+				"res":     res,
+			})
+		}
+	})
+	router.GET("api/stuff/libraries/book/get/:id/extra", func(c *gin.Context) {
+		id := c.Param("id")
+		if id == "" {
+			c.JSON(400, gin.H{
+				"message": "Brak parametru",
+				"success": false,
+			})
+		} else {
+			id_int, err := strconv.Atoi(id)
+			if err != nil {
+				c.JSON(500, gin.H{
+					"message": "błąd w konwersji",
+					"success": false,
+				})
+			}
+			res, err := handlers.GetBookByIdWithLibrary(id_int)
+			if err != nil {
+				c.JSON(500, gin.H{
+					"message": "błąd w konwersji",
+					"success": false,
+				})
+			}
+			c.JSON(200, gin.H{
+				"success": true,
+				"res":     res,
+			})
+		}
+	})
 
 	router.Run()
 }
