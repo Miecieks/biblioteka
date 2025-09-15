@@ -35,6 +35,16 @@ fetch("http://localhost:8080/api/stuff/libraries/book/get/"+id+"/extra")
   rent.addEventListener("click",renting)
 
   function renting(){
-    console.log(book_id+"   "+lib_id)
+    let userId = sessionStorage.getItem("id") 
+    console.log(book_id+"   "+userId)
+    const rent = {
+      Book_id: book_id,
+      User_id: parseInt(userId),
+    }
+    fetch("http://localhost:8080/api/stuff/libraries/book/rent",{
+      method: "POST",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify(rent)
+    })
     
   }

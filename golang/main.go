@@ -105,6 +105,7 @@ func main() {
 	router.POST("api/user/passChange", handlers.ChangePasses())
 	router.POST("api/stuff/libraries/book/add", handlers.Insert())
 	router.POST("api/stuff/libraries/book/delete", handlers.Delete_book())
+	router.POST("api/stuff/libraries/book/rent", handlers.Rent_book())
 
 	router.GET("api/stuff/libraries/get/all", func(c *gin.Context) {
 		libr := handlers.GetAllLibraries()
