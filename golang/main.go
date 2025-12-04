@@ -115,6 +115,30 @@ func main() {
 		})
 
 	})
+	router.GET("api/stuff/libraries/book/rent/show/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		if id == "" {
+			c.JSON(400, gin.H{
+				"message": "Brak parametru",
+				"success": false,
+			})
+		} else {
+			id_int, _ := strconv.Atoi(id)
+			rented, err := handlers.ShowRentedOne(id_int)
+			if err != nil {
+				c.JSON(520, gin.H{
+					"success": false,
+					"res":     err,
+					"resD":    err.Error(),
+				})
+			} else {
+				c.JSON(200, gin.H{
+					"success": true,
+					"res":     rented,
+				})
+			}
+		}
+	})
 	router.GET("api/stuff/libraries/book/get", func(c *gin.Context) {
 		res := handlers.GetAllBooks()
 		c.JSON(200, gin.H{

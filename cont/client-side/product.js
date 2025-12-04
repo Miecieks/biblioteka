@@ -11,15 +11,19 @@ fetch("http://localhost:8080/api/stuff/libraries/book/get/"+id+"/extra")
             let name = document.getElementById("bookName")
             let author = document.getElementById("author")
             let genre = document.getElementById("genre")
-            let price = document.getElementById("price")
             let library = document.getElementById("library")
             let cover = document.getElementById("cover")
+            let avaib = document.getElementById("avaib")
 
             name.innerHTML = data.res.Name
+            if(data.res.Is_avaible == "true"){
+              avaib.innerHTML = "dostępna"
+            }else{
+              avaib.innerHTML = "niedostępna"
+            }
             author.innerHTML = data.res.Author
             library.innerHTML = " "+data.res.LibName
             genre.innerHTML = " "+data.res.Genre
-            price.innerHTML = " "+data.res.Price+" Zł"
             cover.setAttribute("src","../"+data.res.Cover)
 
             book_id = data.res.Id
@@ -35,6 +39,10 @@ fetch("http://localhost:8080/api/stuff/libraries/book/get/"+id+"/extra")
   rent.addEventListener("click",renting)
 
   function renting(){
+
+    
+
+
     let userId = sessionStorage.getItem("id") 
     console.log(book_id+"   "+userId)
     const rent = {
@@ -46,5 +54,16 @@ fetch("http://localhost:8080/api/stuff/libraries/book/get/"+id+"/extra")
       headers: {"Content-type": "application/json"},
       body: JSON.stringify(rent)
     })
-    
+    .then(data => {
+      console.log(data)
+      let texts = document.getElementById("texter")
+      tango = data.status
+      tango = parseInt(tango)
+      if(tango == 321){
+        texts.innerHTML = "Błąd! książka już jest wypożyczona!"
+      }else if(data.status == "200"){
+        texts.innerHTML = "Wypożyczono!"
+      }
+
+        })
   }

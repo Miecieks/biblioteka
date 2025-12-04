@@ -1,10 +1,5 @@
 let holder = document.getElementById("holder")
 
-
-
-
-
-
 fetch("http://localhost:8080/api/stuff/libraries/book/get")
   .then(res => res.json())
   .then(data => {

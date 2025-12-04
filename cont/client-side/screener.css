@@ -1,3 +1,8 @@
+
+#everything{
+        display: flex;
+}
+
 #screenOfChange{
     width:300px;
     height: 150px;
@@ -5,4 +10,30 @@
     position: absolute;
     left: 40%;
     bottom: 49%;
+}
+#profil{
+    width:35%;
+    
+}
+#books{
+    width:60%;
+
+}
+
+#books > div > img{
+    width:110px;
+    height: 130px;
+}
+#books{
+    height: auto;
+    width: calc(100% - 250px);
+    display: flexbox;
+    align-items: center;
+    float: right;
+}
+#books > div{
+    width:110px;
+    height: 200px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
